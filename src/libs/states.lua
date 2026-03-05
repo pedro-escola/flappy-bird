@@ -84,10 +84,12 @@ function base_handler:changeState(newState)
 end
 
 ---Gets a state from its name.
----@param name string
+---@param name string?
 ---@return state?
 function base_handler:getState(name)
-    if not name then return end
+    if not name then
+        return self.states[self.curState]
+    end
 
     name = name:upper()
     if self.enums[name] then
