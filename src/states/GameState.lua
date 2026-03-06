@@ -4,7 +4,10 @@ local states = require("libs.states")
 require("objects.player")
 require("objects.pipe")
 
+---@class GameState: state_handler
 GameState = states.create()
+
+GameState.score = 0
 
 GameState:create("title", {
     ---@param self state
@@ -15,13 +18,18 @@ GameState:create("title", {
 })
 
 ---@class GameState_gameState: state
+---@field score number
 ---@field objects table<integer, Object?>
+---@field addObject fun(self: GameState_gameState, object: Object)
 
 GameState:create("game", {
+    score = 0,
+
     ---@param self GameState_gameState
     enter = function(self)
         self.objects = {}
 
+        self.score = 0
         self:addObject(PlayerObject:clone())
         self:addObject(PipeSpawner:clone())
     end,
@@ -50,6 +58,8 @@ GameState:create("game", {
                 obj:draw()
             end
         end
+
+        love.graphics.print(tostring(self.score), 400, 0)
     end,
 
     ---@param self GameState_gameState
